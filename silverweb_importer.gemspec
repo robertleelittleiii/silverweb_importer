@@ -7,16 +7,16 @@ require "silverweb_importer/version"
 Gem::Specification.new do |s|
   s.name        = "silverweb_importer"
   s.version     = SilverwebImporter::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of SilverwebImporter."
-  s.description = "TODO: Description of SilverwebImporter."
+  s.authors     = ["Robert Lee Little III"]
+  s.email       = ["rob@silverwebsystems.com"]
+  s.homepage    = "www.silverwebsystems.com"
+  s.summary     = "plugin to silverweb cms to allow users to easliy import csv/excel/openoffice sheets into any database table."
+  s.description = "Silverweb Importer."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 3.2.18"
+  s.add_dependency "rails", "~> 3.2.8"
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "mysql2"
 end
