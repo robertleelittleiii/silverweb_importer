@@ -14,6 +14,7 @@ class FeedManagementController < ApplicationController
   
   require "roo"
   require "roo-xls"
+  require "rat"
   
   IMAGE_TYPES = ["jpg", "gif", "png","jpeg"].freeze
   MAP_FIELD_LIST = [["style-code",0], ["color-code",1]].freeze
@@ -764,30 +765,37 @@ class FeedManagementController < ApplicationController
       # file is being processed, take no action.
       puts("Processing in progress.  Take NO ACTION!!")
     else
+      
       puts("Starting Processing")
       @importer.status="Start"
       @importer.status_percent=0
       @importer.status_message="Starting Import..."
       @importer.save
     
-      begin 
-        if @importer.importer_type=="file" then
-        file_type = @importer.files[0][:file_info].split(".").last rescue "none"
-        puts("file_type: #{file_type}")
+      command = "bundle exec rake importer:data_import[#{params[:importer_id]}]"
+      # job = Rat.add("touch at-at", Time.now + 5)
 
-        case file_type
-        when "zip"
-          Resque.enqueue(ImageImportProcessor, @importer.id)
-        when "xls", "xlsx", "ods"
-          Resque.enqueue(ImportProcessor, @importer.id)
-        else
-        end
-      else
-        Resque.enqueue(SyncProcessor, @importer.id)
-      end
-      rescue
-        import_sheet_manual
-      end
+      spawn("echo '#{command}'|at now + 1minute")
+
+      # bundle exec rake importer:data_import[6] 
+#      begin 
+#        if @importer.importer_type=="file" then
+#        file_type = @importer.files[0][:file_info].split(".").last rescue "none"
+#        puts("file_type: #{file_type}")
+#
+#        case file_type
+#        when "zip"
+#          Resque.enqueue(ImageImportProcessor, @importer.id)
+#        when "xls", "xlsx", "ods"
+#          Resque.enqueue(ImportProcessor, @importer.id)
+#        else
+#        end
+#      else
+#        Resque.enqueue(SyncProcessor, @importer.id)
+#      end
+#      rescue
+#        import_sheet_manual
+#      end
       
     end
     
