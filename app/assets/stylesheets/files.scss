@@ -14,10 +14,12 @@
 root { 
     display: block;
 }
-.file-block
-{
+div#file-block.file-block{   
     position:relative; 
-
+    border-bottom-left-radius: inherit !important;
+    border-bottom-right-radius: inherit !important;
+    background-color: transparent !important;
+    min-height: inherit !important;
 }
 
 .fileSingle {
