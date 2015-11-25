@@ -1,0 +1,61 @@
+<div class="filesection">
+  <p>
+    <b>From File:</b><br>
+
+    <!-- START:hidden_div -->
+            <%= hidden_div_if(@importer.files.empty?, :id => "files") %>
+<%#= render(:partial => "/files/files", :object => @files) %>
+    <%= render(:partial => "/files/files", :object => @importer.files) %>
+
+    <%="</div>".html_safe %>
+
+
+   <%= hidden_div_if(@importer.files.count >= @filestoshow, :id => "remote-url") %>
+  <p><b>Remote URL:</b></br>
+    <%=editablefieldcreate("full_uri_path", @importer)%>
+  </p>
+  <%="</div>".html_safe %><br>
+    
+  <p><b>Remote URL:</b></br>
+    <%=editablefieldcreate("full_uri_path", @importer)%>
+      </p>    
+    <%="</div>".html_safe %>
+
+
+
+</div> 
+<div id="table-section">
+  <p>
+    WARNING UNKNOWN FILE TYPE !!!
+  </p>
+
+
+</div>
+
+<div id="add-column-map">
+
+
+
+</div>
+</div>
+<div id="importer-item-list">
+
+</div>
+<div id="import-button">
+</div>
+<div id="import-progress-block" style="display:none;">
+      <%=render(:partial => "import_progress_block")%>
+
+</div>
+<div id="importer-status">
+
+    <%=render(:partial => "importer_status")%>
+</div>
+<p style="
+    display: inline-block;
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+">
+(id=<%=@importer.id%>)
+</p>

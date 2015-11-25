@@ -15,3 +15,4 @@ gem "jquery-rails"
 
 # To use debugger
 # gem 'debugger'
+gem 'rubocop' # --only HashSyntax --auto-correct

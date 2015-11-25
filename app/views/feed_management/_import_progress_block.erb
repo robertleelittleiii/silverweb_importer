@@ -1,0 +1,4 @@
+ <div id="importer-status-img"></div></br>
+ <div id="importer-status-msg"><%=@importer.status_message%></div>
+ <div id="progress-done" class="hidden-item"><%=@importer.status_percent%></div>
+ <div id="cancel-process"><%=link_to('Cancel',{:action=>:cancel_import, :id=>@importer.id}, :id=>"cancel-process",:class=>"button-link", :remote=>true)%></div>

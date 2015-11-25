@@ -1,0 +1,51 @@
+<div class="hidden-item">
+    <div id="as_window"><%=params[:request_type]=="window"%></div>
+    <div id="dialog-height">650</div>
+    <div id="dialog-width">1050</div>
+    <div id="dialog-name">Data Import Manager</div>
+</div>
+
+<div class="cms-block" Align="Left">
+  <div class="cms-section">
+    <div class="cms-heading">Importer</div>
+    <div class="cms-content">
+      <div id="importer-info">
+        <p>
+          <b>Select Importer:</b>
+        <div id="set-up-importer">
+          <%=  render :partial=>"set_up_importer"%>
+        </div>   
+        <div id="set-up-importer-button"> 
+          <%=link_to( "New", {:action=>:create_empty_record, :importer_type=>"file"}, :remote=>true,:class=>"button-link",  :id=>"new-importer")%>
+        </div>
+        <div id="set-up-importer-button"> 
+          <%=link_to( "Delete", "#", :remote=>true, :class=>"button-link", :id=>"delete-importer")%>
+
+        </div>
+        <div id="set-up-importer-button"> 
+          <%=link_to( "Duplicate", "#", :remote=>true, :class=>"button-link", :id=>"duplicate-importer")%>
+
+        </div>
+
+        <hr>
+        <div id="importer-name-div">
+
+        </div>
+
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="cms-section">
+
+    <div class="cms-heading">Action</div>
+    <div class="cms-content" id="import-action-div">
+      <div id="import-action">
+
+      </div>
+    </div>
+
+  </div>
+
+
+</div>

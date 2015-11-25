@@ -5,7 +5,17 @@
         <data xmlns="http://www.netbeans.org/ns/ruby-project/1">
             <name>silverweb_importer</name>
             <source-roots>
-                <root id="src.dir"/>
+                <root id="src.assets.dir" name="assets"/>
+                <root id="src.controllers.dir" name="controllers"/>
+                <root id="src.helpers.dir" name="helpers"/>
+                <root id="src.mailers.dir" name="mailers"/>
+                <root id="src.models.dir" name="models"/>
+                <root id="src.uploaders.dir" name="uploaders"/>
+                <root id="src.views.dir" name="views"/>
+                <root id="src.db.dir"/>
+                <root id="src.config.dir"/>
+                <root id="src.dir" name="lib"/>
+                <root id="src.script.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

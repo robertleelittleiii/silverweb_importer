@@ -1,0 +1,88 @@
+<div class="filesection">
+  <p>
+    <b>From File:</b><br>
+
+    <!-- START:hidden_div -->
+    <%= hidden_div_if(@importer.files.empty?, :id => "files") %>
+<%#= render(:partial => "/files/files", :object => @files) %>
+    <%= render(:partial => "/files/files", :object => @importer.files) %>
+
+
+    <%="</div>".html_safe %>
+
+
+    <%= hidden_div_if(@importer.files.count >= @filestoshow, :id => "filebutton") %>
+    <%=render(:partial => "/files/filebutton")%>
+
+
+<%#*remote_file_info_url%>  
+    <%="</div>".html_safe %><br>
+
+    <%= hidden_div_if(@importer.files.count >= @filestoshow, :id => "remote-url") %>
+  <p><b>Remote URL:</b></br>
+    <%=editablefieldcreate("full_uri_path", @importer)%>
+  </p>
+  <%="</div>".html_safe %><br>
+
+</div> 
+<div id="table-section">
+  <p>
+    <b>Sample File Name:</b>   <%=@file_name%></br></br>
+  </p>
+  <p>
+    <b>Seperator:(i.e "-", "_", etc.)</b><br>
+    <%=editablefieldcreate("columns", @importer)%>
+  </p>
+<%#= select_tag(@sample_field_list, options_for_select(@field_list, 0), :id=>"field-list")%>
+<%#= select_tag(@map_fields_list, options_for_select(@map_field_list, 0), :id=>"map-field-list")%>
+
+<%#= select_tag(@selected_model, options_for_select(@model_names, 0), :id=>"model-name")%>
+<%#=ajax_select2("table_name","importer",@importer, @model_names, :class=>"model-name")%>
+
+</p>
+
+
+</div>
+
+<div id="add-column-map">
+
+  <div id="sheet-columns">  
+    <%=render(:partial => "sheet_columns_zip", :id=>@importer.id)%>
+  </div> 
+  <div id="map-to">
+    Map To
+  </div>
+  <div id="table-columns">
+    <%=render(:partial => "columns_zip", :id=>@importer.id)%>
+  </div>
+  <div id="map-to-button">
+
+  </div>
+</div>
+<div id="importer-item-list">
+  <p>      
+    <%=render(:partial => "importer_items_list")%>
+  </p>
+</div>
+</p>
+<p>
+<div id="import-button">
+  <%=button_to( "Run Import", {:action=>:import_sheet,:importer_id=>@importer.id }, :remote=>true, :id=>"run-importer")%>
+</div>
+<div id="import-progress-block" style="display:none;">
+        <%=render(:partial => "import_progress_block")%>
+
+</div>
+</p>
+<div id="importer-status">
+
+    <%=render(:partial => "importer_status")%>
+</div>
+<p style="
+    display: inline-block;
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+">
+(id=<%=@importer.id%>)
+</p>

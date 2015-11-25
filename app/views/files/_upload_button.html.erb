@@ -1,0 +1,8 @@
+<%= form_for FileAtt.new, :html => {:multipart => true} do |f| %>
+  <span class="btn btn-success fileinput-button">
+    <i class="glyphicon glyphicon-plus"></i>
+    <span><%=image_tag("interface/browse.png", :id=>"file-button") %> </span>
+    <!-- The file input field used as target for the file upload widget -->
+    <%= f.file_field :file_info, :multiple=>true , :name=>"file[file_info]" %>
+  </span>
+<% end %>

@@ -1,0 +1,7 @@
+  <p>
+     <b>Number of Times Run:</b> <%= @importer.run_count.to_i %></br>
+  <b>Last Start Time:</b> <%= @importer.start_time.strftime("%m-%d-%Y %I:%M:%S %p") rescue "n/a"%> </br>
+  <b>Last End Time:</b> <%= @importer.end_time.strftime("%m-%d-%Y %I:%M:%S %p") rescue "n/a"%> </br>
+  <b>Last Status:</b> <%= @importer.status_message %> </br>
+
+  </p> 

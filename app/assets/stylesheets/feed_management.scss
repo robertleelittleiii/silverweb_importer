@@ -1,0 +1,241 @@
+/* 
+    Document   : feed_management
+    Created on : Sep 23, 2011, 1:08:54 AM
+    Author     : rlittle
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+@import "files.css";
+@import "custom-theme/jquery-ui.css";
+
+root { 
+    display: block;
+}
+
+
+#importer-status {
+    font-size: 9pt;
+    margin-top: 15px;
+    float: right;
+    border-bottom: 1px red solid;
+    padding-top: 18px;
+    width: 100%;
+    border-top: 1px red solid;
+    margin-bottom: 15px;
+    padding-bottom: 18px;
+    display: inline;
+}
+#importer-status b {
+    font-size: 10pt;
+    font-family: monospace;
+    color: darkRed;
+}
+
+
+#importer-status-msg {
+    margin-left: auto;
+margin-right: auto;
+position: relative;
+text-align: center;
+margin-top: -15px;
+    font-size: 10px;
+}
+
+#import-button {
+    float: left;
+padding-left: 40px;
+padding-top: 15px;
+}
+
+#import-progress-block {
+    width: 450px;
+    height: 65px;
+float: right;
+border: 1px black none;
+    margin-right: 20px;
+    border: 1px black dotted;
+    padding: 20px;
+}
+#from-select {
+    
+    
+}
+
+#sheet-info {
+    text-align: left;
+    font-size: 9pt;
+    position: absolute;
+    top: -18px;
+}
+
+#importer-status-img {
+    width: 200px;
+height: 10px;
+margin-right: auto;
+margin-left: auto;
+margin-top: 10px;
+    
+}
+
+#importer_table_name,#model-name
+{
+    margin:20px;
+    margin-top: 27px;
+    
+}
+/*.myaccountcontent {
+    float:left;
+    padding-bottom:20px
+}*/
+
+#set-up-importer-button {
+    display: inline-block;
+    
+}
+
+#set-up-importer {
+    display: inline-block;
+margin-left: 20px;
+    
+}
+.line-editable {
+  height: 14px;
+display: inline-block;  
+width:100%;
+float:left;
+text-align: center;
+    
+}
+.import-item-delete
+{
+    float: right;
+margin-top: -10px;
+margin-right: 3px;
+    
+}
+.importer-item {
+    border-style: dotted;
+border-color: black;
+border-width: 1px;
+float: left;
+margin-left: 20px;
+height: 25px;
+margin-right: 20px;
+width:645px;
+    
+}
+
+#importer-item-list
+{
+ margin-top: 15px;
+float: left;
+border-bottom: 1px #63FC63 solid;
+padding-top: 18px;
+width: 100%;
+border-top: 1px #63FC63 solid;
+margin-bottom: 15px;
+padding-bottom: 18px;
+}
+
+#import-action {
+    min-height: 200px;
+   display: inline-block;
+padding-bottom: 20px;
+    
+}
+.filesection {
+    float: left;
+    display: inline;
+    min-width: 450px;
+    min-height: 100px;
+    margin-top: 20px;
+    border: blue dotted 1px;
+    margin-left: 10px;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+#table-section {
+    float: left;
+    display: inline;
+    position: relative;
+    width: 450px;
+    min-height: 90px;
+    margin-top: 20px;
+    border: blue dotted 1px;
+    margin: 20px;
+    padding: 10px;
+}
+
+#add-column-map {
+    border-style: dotted;
+    border-color: black;
+    border-width: 1px;
+    float: left;
+    margin-left: 20px;
+    height: 27px;
+    margin-right: 20px;
+    padding-top: 0px;
+}
+
+div#add-column-map > div {
+    padding-top: 5px;
+}
+
+#sheet-columns {
+    float:left;
+    display:inline;
+    position:relative;
+    width:275px;
+    text-align: right;
+}
+
+#map-to {
+    float:left;
+    display:inline;
+    position:relative;
+    width:75px;
+    text-align:center;
+
+}
+#map-to-button {
+    display:inline;
+    position:relative;
+    background-image: image-url("interface/browse.png");
+    background-repeat:no-repeat;
+    background-position: 1px 3px;
+    float:right;
+    width:20px;
+    height:20px;
+}
+
+#table-columns {
+    float:left;
+    display:inline;
+    position:relative;
+    width:275px;
+    min-height: 100px;
+    text-align:left;
+}
+
+#sheet-view {
+    
+    min-height: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    float:left;
+    display:inline;
+    position: relative;
+    
+}
+
+#importer-info{
+    
+    min-height: 50px;
+    margin-top:20px;
+}
