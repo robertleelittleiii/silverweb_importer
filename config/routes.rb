@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get "delete_file"
       get "delete_file_static"
       post "delete_import_item"
+      get "delete_import_item"
       post "delete_importer"
       post "duplicate_importer"
       get "from_xml_to_database"
