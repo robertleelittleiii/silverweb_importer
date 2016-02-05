@@ -15,6 +15,8 @@ class FeedManagementController < ApplicationController
   require "roo"
   require "roo-xls"
   require "rat"
+  require 'zip'
+
   
   IMAGE_TYPES = ["jpg", "gif", "png","jpeg"].freeze
   MAP_FIELD_LIST = [["style-code",0], ["color-code",1]].freeze
@@ -89,6 +91,12 @@ class FeedManagementController < ApplicationController
         rescue
           @table_columns = []
         end
+        
+        if params[:model_name] == "Product" then
+          @table_columns << ["Tagged[Department]"]
+          @table_columns << ["Tagged[Category]"]
+        end
+           
     
         render partial: "columns"
       else
@@ -174,7 +182,7 @@ class FeedManagementController < ApplicationController
         pathtopublic = Rails.root.to_s + "/public" 
         fullpath = pathtopublic+@importer.files[0].file_info_url
         
-        image_file = Zip::ZipFile.open(fullpath)
+        image_file = Zip::File.open(fullpath)
         @file_name = "none found!!"    
         image_file.entries.each_with_index do |each_item, index|
           file_name = each_item.name.split("/").last
@@ -187,7 +195,7 @@ class FeedManagementController < ApplicationController
         end
         
         if not @importer.columns.blank?
-          @field_list = @file_name.split(".")[0].split(@importer.columns).each_with_index.collect
+          @field_list = @file_name.split(".")[0].split(@importer.columns).each_with_index.collect.to_a
         end
     
         @map_field_list = [["style-code",0], ["color-code",1]]
@@ -263,7 +271,7 @@ class FeedManagementController < ApplicationController
         pathtopublic = Rails.root.to_s + "/public" 
         fullpath = pathtopublic+@importer.files[0].file_info_url
         
-        image_file = Zip::ZipFile.open(fullpath)
+        image_file = Zip::File.open(fullpath)
         @file_name = "none found!!"    
         image_file.entries.each_with_index do |each_item, index|
           file_name = each_item.name.split("/").last
@@ -276,7 +284,7 @@ class FeedManagementController < ApplicationController
         end
         
         if not @importer.columns.blank?
-          @field_list = @file_name.split(".")[0].split(@importer.columns).each_with_index.collect
+          @field_list = @file_name.split(".")[0].split(@importer.columns).each_with_index.collect.to_a
         end
         
         @workbook_size = "Number of Images:(#{image_file.size.to_s})"
@@ -285,38 +293,38 @@ class FeedManagementController < ApplicationController
         render partial: "sheet_columns_zip"
       when "xls", "xlsx", "ods"
         #begin
-          if(not params[:file_path]=="") then
+        if(not params[:file_path]=="") then
      
-            @pathtopublic = Rails.root.to_s + "/public/"  
-            # @fullpath = @pathtopublic+params[:file_path]
-            @fullpath = @pathtopublic + @importer.files[0].file_info_url
-            puts("here i am ------------ > ")
-            case file_type #File.extname(params[:file_path]).delete!(".")
-            when "xls"
-              @workbook = Roo::Excel.new(@fullpath)
+          @pathtopublic = Rails.root.to_s + "/public/"  
+          # @fullpath = @pathtopublic+params[:file_path]
+          @fullpath = @pathtopublic + @importer.files[0].file_info_url
+          puts("here i am ------------ > ")
+          case file_type #File.extname(params[:file_path]).delete!(".")
+          when "xls"
+            @workbook = Roo::Excel.new(@fullpath)
 
-            when "xlsx"
-              @workbook = Roo::Excelx.new(@fullpath)
+          when "xlsx"
+            @workbook = Roo::Excelx.new(@fullpath)
 
-            when "ods"
-              @workbook = Roo::Openoffice.new(@fullpath)
-            end
+          when "ods"
+            @workbook = Roo::Openoffice.new(@fullpath)
+          end
             
-            puts("workbook: #{@workbook.inspect}")
-            # wb_info=Hash[@workbook.info.scan(/\b(.*):(.*)/)]
-            wb_info=Hash[@workbook.info.scan(/\b(.*|\s*):(.*|\s*)/)]
+          puts("workbook: #{@workbook.inspect}")
+          # wb_info=Hash[@workbook.info.scan(/\b(.*):(.*)/)]
+          wb_info=Hash[@workbook.info.scan(/\b(.*|\s*):(.*|\s*)/)]
   
-            @workbook.default_sheet= @workbook.sheets[0]
-            @name_row=@workbook.row(1)
-            @hashed_name_row=Hash[@name_row.collect { |v| [v, @name_row.index(v)]}]
-            @workbook_size = "Size Cols:("+wb_info["First column"].strip+"..."+wb_info["Last column"].strip + ") by Rows:(" + wb_info["First row"].strip+"..."+wb_info["Last row"].strip+")"
-            # puts(@hashed_name_row.inspect)
-            render partial: "sheet_columns"
-          else
-            render nothing: true
-          end  
+          @workbook.default_sheet= @workbook.sheets[0]
+          @name_row=@workbook.row(1)
+          @hashed_name_row=Hash[@name_row.collect { |v| [v, @name_row.index(v)]}]
+          @workbook_size = "Size Cols:("+wb_info["First column"].strip+"..."+wb_info["Last column"].strip + ") by Rows:(" + wb_info["First row"].strip+"..."+wb_info["Last row"].strip+")"
+          # puts(@hashed_name_row.inspect)
+          render partial: "sheet_columns"
+        else
+          render nothing: true
+        end  
         #rescue
-         # render nothing: true
+        # render nothing: true
         #end
       else
         render nothing: true
@@ -640,7 +648,7 @@ class FeedManagementController < ApplicationController
     
     Dir.mkdir(image_import_directory) rescue 0
     
-    image_file = Zip::ZipFile.open(fullpath)
+    image_file = Zip::File.open(fullpath)
 
     begin
       image_file.entries.each_with_index do |each_item, index|
@@ -772,30 +780,37 @@ class FeedManagementController < ApplicationController
       @importer.status_message="Starting Import..."
       @importer.save
     
-      command = "bundle exec rake importer:data_import[#{params[:importer_id]}]"
+      file_type = @importer.files[0][:file_info].split(".").last rescue "none"
+
+      case file_type
+      when "zip"
+        command = "bundle exec rake importer:image_import[#{params[:importer_id]}]"
+      when "xls", "xlsx", "ods"
+        command = "bundle exec rake importer:data_import[#{params[:importer_id]}]"
+      end
       # job = Rat.add("touch at-at", Time.now + 5)
 
       spawn("echo '#{command}'|at now + 1minute")
 
       # bundle exec rake importer:data_import[6] 
-#      begin 
-#        if @importer.importer_type=="file" then
-#        file_type = @importer.files[0][:file_info].split(".").last rescue "none"
-#        puts("file_type: #{file_type}")
-#
-#        case file_type
-#        when "zip"
-#          Resque.enqueue(ImageImportProcessor, @importer.id)
-#        when "xls", "xlsx", "ods"
-#          Resque.enqueue(ImportProcessor, @importer.id)
-#        else
-#        end
-#      else
-#        Resque.enqueue(SyncProcessor, @importer.id)
-#      end
-#      rescue
-#        import_sheet_manual
-#      end
+      #      begin 
+      #        if @importer.importer_type=="file" then
+      #        file_type = @importer.files[0][:file_info].split(".").last rescue "none"
+      #        puts("file_type: #{file_type}")
+      #
+      #        case file_type
+      #        when "zip"
+      #          Resque.enqueue(ImageImportProcessor, @importer.id)
+      #        when "xls", "xlsx", "ods"
+      #          Resque.enqueue(ImportProcessor, @importer.id)
+      #        else
+      #        end
+      #      else
+      #        Resque.enqueue(SyncProcessor, @importer.id)
+      #      end
+      #      rescue
+      #        import_sheet_manual
+      #      end
       
     end
     
@@ -863,7 +878,7 @@ class FeedManagementController < ApplicationController
             if isRelationship.size > 1 then
               input_record.merge!(isRelationship[0].classify=>{}) if not input_record.has_key?(isRelationship[0].classify)
               
-             # puts("table_name.classify.constantize.columns_hash[isRelationship[1]] #{table_name.classify.constantize.columns_hash[isRelationship[1]].inspect} ")
+              # puts("table_name.classify.constantize.columns_hash[isRelationship[1]] #{table_name.classify.constantize.columns_hash[isRelationship[1]].inspect} ")
               
               case isRelationship[0].classify.constantize.columns_hash[isRelationship[1]].type
               when :boolean
@@ -986,7 +1001,7 @@ class FeedManagementController < ApplicationController
     importer.end_time = DateTime.now
     importer.save
     
-  # render :nothing=>true
+    # render :nothing=>true
 
   end
   
@@ -1016,7 +1031,7 @@ class FeedManagementController < ApplicationController
     end
       
     #wb_info=Hash[workbook.info.scan(/\b(.*):(.*)/)]
-     wb_info=Hash[workbook.info.scan(/\b(.*|\s*):(.*|\s*)/)]
+    wb_info=Hash[workbook.info.scan(/\b(.*|\s*):(.*|\s*)/)]
   
     record_count = wb_info["Last row"].to_i * wb_info["Number of sheets"].to_i
     total_row_counter = 0
@@ -1194,7 +1209,7 @@ class FeedManagementController < ApplicationController
     end
       
     #wb_info=Hash[@workbook.info.scan(/\b(.*):(.*)/)]
-     wb_info=Hash[workbook.info.scan(/\b(.*|\s*):(.*|\s*)/)]
+    wb_info=Hash[workbook.info.scan(/\b(.*|\s*):(.*|\s*)/)]
   
     record_count = wb_info["Last row"].to_i * wb_info["Number of sheets"].to_i
     total_row_counter = 0
