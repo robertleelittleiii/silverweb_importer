@@ -320,15 +320,21 @@ namespace :importer do
             
                 temp_image = ImageList.new(Rails.root.join(image_import_directory,entry))
                 
-                max_image_size = Settings.max_image_size.to_i.to_s + "x" rescue "1000x"
+                max_image_size = Settings.max_image_size.to_i.to_s == "0" ?  "1000x" :Settings.max_image_size.to_i.to_s + "x" 
                 
                 temp_image.change_geometry!(max_image_size)  { |cols, rows, img|
                   img.resize!(cols, rows)
                 }
+                sleep(1)
                 
                 temp_image.resample()
+                sleep(1)
+                
                 temp_image.write(Rails.root.join("tmp",entry)) { self.quality = 50 }
+                sleep(1)
+                
                 temp_image.destroy!
+                sleep(1)
 
                 #
                 # Then add the imaage to the product
