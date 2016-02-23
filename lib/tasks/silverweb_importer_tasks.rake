@@ -306,7 +306,8 @@ namespace :importer do
               #first we see if image exists,if it does, we need to remove it before we replace it.  We will destroy each even dups
               #
           
-              image_exists = product.pictures.where(:image=>entry)
+              image_exists = product.pictures.where(:image=>entry.tr(" ","_"))
+              puts("image_exists? :#{entry.tr(" ","_")} -->#{image_exists.inspect}")
               if not image_exists.nil? then
                 image_exists.each do |each_item| 
                   each_item.destroy 
@@ -318,9 +319,13 @@ namespace :importer do
                 #
             
                 temp_image = ImageList.new(Rails.root.join(image_import_directory,entry))
-                temp_image.change_geometry!('1000x')  { |cols, rows, img|
+                
+                max_image_size = Settings.max_image_size.to_i.to_s + "x" rescue "1000x"
+                
+                temp_image.change_geometry!(max_image_size)  { |cols, rows, img|
                   img.resize!(cols, rows)
                 }
+                
                 temp_image.resample()
                 temp_image.write(Rails.root.join("tmp",entry)) { self.quality = 50 }
                 temp_image.destroy!
