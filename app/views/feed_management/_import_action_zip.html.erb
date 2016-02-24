@@ -23,6 +23,10 @@
     <%=editablefieldcreate("full_uri_path", @importer)%>
   </p>
   <%="</div>".html_safe %><br>
+  
+  <div class="replace-images-div">
+                <b>Replace Images: </b> <%=editablecheckboxedit("replace_images", @settings, "Replace Images")%> 
+  </div>
 
 </div> 
 <div id="table-section">

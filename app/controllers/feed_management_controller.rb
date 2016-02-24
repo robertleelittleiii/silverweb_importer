@@ -168,10 +168,25 @@ class FeedManagementController < ApplicationController
     end 
   end
   
+  def update
+    eval("Settings." + params["settings"].to_a.first[0] + "='" + params["settings"].to_a.first[1] +"'"   )
+  
+    respond_to do |format|
+      format.json  { head :ok }
+      format.html { head :ok }  
+    end  
+  end
+  
   def import_action_partial
     if params[:id]=="" then
       render nothing: true
     else
+      @settings = Settings.all 
+    if @settings.blank? then
+      Settings.test="blank";
+      @settings = Settings.all 
+    end
+    
       @importer = Importer.find(params[:id])
       @filestoshow = FILESTOSHOW
       file_type = @importer.files[0][:file_info].split(".").last rescue "none"

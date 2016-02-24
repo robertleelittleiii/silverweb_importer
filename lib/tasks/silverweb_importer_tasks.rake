@@ -203,7 +203,7 @@ namespace :importer do
                   #                  puts("-b--------update occured")
 
                 rescue
-                    puts("Updateing Table #{item_key}, an error occured.")
+                  puts("Updateing Table #{item_key}, an error occured.")
                 end
               end
             end
@@ -297,6 +297,7 @@ namespace :importer do
               puts("Product not found with style code!!") 
               image_name = entry  
             else
+              image_name = entry  
               puts("style_code: #{style_code} color_code: #{color_code}")
 
               puts(product.inspect)
@@ -308,52 +309,59 @@ namespace :importer do
           
               image_exists = product.pictures.where(:image=>entry.tr(" ","_"))
               puts("image_exists? :#{entry.tr(" ","_")} -->#{image_exists.inspect}")
-              if not image_exists.nil? then
-                image_exists.each do |each_item| 
-                  each_item.destroy 
+              
+              if not image_exists.nil? and (Settings.replace_images=="false") then
+                importer.status_message="Duplicate Image "+ entry + "(" + index.to_s + " of " + file_count.to_s + ")"
+                importer.save
+                
+              else
+                
+                if not image_exists.nil? then
+                  image_exists.each do |each_item| 
+                    each_item.destroy 
+                  end
+                end
+                begin
+                  #
+                  # process the image to 1000 px wide with 72 dpi and 50% compression as a jpg.
+                  #
+            
+                  temp_image = ImageList.new(Rails.root.join(image_import_directory,entry))
+                
+                  max_image_size = Settings.max_image_size.to_i.to_s == "0" ?  "1000x" :Settings.max_image_size.to_i.to_s + "x" 
+                
+                  temp_image.change_geometry!(max_image_size)  { |cols, rows, img|
+                    img.resize!(cols, rows)
+                  }
+                  sleep(1)
+                
+                  temp_image.resample()
+                  sleep(1)
+                
+                  temp_image.write(Rails.root.join("tmp",entry)) { self.quality = 50 }
+                  sleep(1)
+                
+                  temp_image.destroy!
+                  sleep(1)
+
+                  #
+                  # Then add the imaage to the product
+                  #
+                  picture=Picture.create
+                  picture.image.store!(File.open(Rails.root.join("tmp",entry)))
+                  File.delete(Rails.root.join("tmp",entry))
+          
+                  picture.save
+                  image_name = entry
+                  picture.title = color_code
+                  picture.save
+
+                  product.pictures << picture
+                  product.save
+                rescue Exception => exc
+                  puts("Message for the log file #{exc.message}")
                 end
               end
-              begin
-                #
-                # process the image to 1000 px wide with 72 dpi and 50% compression as a jpg.
-                #
-            
-                temp_image = ImageList.new(Rails.root.join(image_import_directory,entry))
-                
-                max_image_size = Settings.max_image_size.to_i.to_s == "0" ?  "1000x" :Settings.max_image_size.to_i.to_s + "x" 
-                
-                temp_image.change_geometry!(max_image_size)  { |cols, rows, img|
-                  img.resize!(cols, rows)
-                }
-                sleep(1)
-                
-                temp_image.resample()
-                sleep(1)
-                
-                temp_image.write(Rails.root.join("tmp",entry)) { self.quality = 50 }
-                sleep(1)
-                
-                temp_image.destroy!
-                sleep(1)
-
-                #
-                # Then add the imaage to the product
-                #
-                picture=Picture.create
-                picture.image.store!(File.open(Rails.root.join("tmp",entry)))
-                File.delete(Rails.root.join("tmp",entry))
-          
-                picture.save
-                image_name = entry
-                picture.title = color_code
-                picture.save
-
-                product.pictures << picture
-                product.save
-              rescue Exception => exc
-                puts("Message for the log file #{exc.message}")
-              end
-
             end
           end
           File.delete(Rails.root.join(image_import_directory,entry))
