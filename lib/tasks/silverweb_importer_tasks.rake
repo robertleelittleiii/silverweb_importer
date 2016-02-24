@@ -310,13 +310,13 @@ namespace :importer do
               image_exists = product.pictures.where(:image=>entry.tr(" ","_"))
               puts("image_exists? :#{entry.tr(" ","_")} -->#{image_exists.inspect}")
               
-              if not image_exists.nil? and (Settings.replace_images=="false") then
+              if !image_exists.blank? and (Settings.replace_images=="false") then
                 importer.status_message="Duplicate Image "+ entry + "(" + index.to_s + " of " + file_count.to_s + ")"
                 importer.save
-                
+                puts("Duplicate Image found! #{entry} Settings.replace_images: #{Settings.replace_images}, image_exists.nil?: #{image_exists.nil?}")
               else
                 
-                if not image_exists.nil? then
+                if !image_exists.blank? then
                   image_exists.each do |each_item| 
                     each_item.destroy 
                   end
@@ -325,7 +325,10 @@ namespace :importer do
                   #
                   # process the image to 1000 px wide with 72 dpi and 50% compression as a jpg.
                   #
-            
+                  puts("------ i m a g e    b e i n g    p r o c e s s e d -----")
+
+                  puts("Creating image --> #{entry}")
+
                   temp_image = ImageList.new(Rails.root.join(image_import_directory,entry))
                 
                   max_image_size = Settings.max_image_size.to_i.to_s == "0" ?  "1000x" :Settings.max_image_size.to_i.to_s + "x" 
@@ -358,6 +361,9 @@ namespace :importer do
 
                   product.pictures << picture
                   product.save
+                  
+                 puts("------ i m a g e  p r o c e s s i n g  C o m p l e t e -----")
+
                 rescue Exception => exc
                   puts("Message for the log file #{exc.message}")
                 end
