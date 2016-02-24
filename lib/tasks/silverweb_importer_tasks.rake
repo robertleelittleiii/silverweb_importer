@@ -336,16 +336,16 @@ namespace :importer do
                   temp_image.change_geometry!(max_image_size)  { |cols, rows, img|
                     img.resize!(cols, rows)
                   }
-                  sleep(1)
+                  # sleep(1)
                 
                   temp_image.resample()
-                  sleep(1)
+                  #sleep(1)
                 
                   temp_image.write(Rails.root.join("tmp",entry)) { self.quality = 50 }
-                  sleep(1)
+                  #sleep(1)
                 
                   temp_image.destroy!
-                  sleep(1)
+                  #sleep(1)
 
                   #
                   # Then add the imaage to the product
@@ -376,7 +376,7 @@ namespace :importer do
       
         status_percent=Float(Float(index)/Float(file_count)*100)
       
-        sleep 1
+        # sleep 1
      
         importer.reload
       
