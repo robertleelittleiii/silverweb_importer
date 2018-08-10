@@ -834,7 +834,7 @@ class FeedManagementController < ApplicationController
   end
 
   def import_sheet_manual
-    importer= Importer.find(params[:importer_id])
+        importer= Importer.find(params[:importer_id])
     
     pathtopublic = Rails.root.to_s + "/public" 
     fullpath = pathtopublic+importer.files[0].file_info_url
