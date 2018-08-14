@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "mysql2"
 
-  s.add_dependency "rails", "~> 4.2.0"
+  s.add_dependency "rails", "~>  5.1.4"
   s.add_dependency 'silverweb_cms'
   s.add_dependency 'rubyzip'
   s.add_dependency 'spreadsheet'

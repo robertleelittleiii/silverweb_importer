@@ -1,8 +1,11 @@
 class AddStartAndEndTimeToImporter < ActiveRecord::Migration
   def self.up
-    add_column :importers, :start_time, :time
+ begin
+   add_column :importers, :start_time, :time
     add_column :importers, :end_time, :time
     add_column :importers, :run_count, :integer
+ rescue
+ end
   end
 
   def self.down

@@ -1,9 +1,12 @@
 class UpdateImporterAddColumns < ActiveRecord::Migration
   def self.up
+  begin
     add_column :importers, :importer_type, :string
     add_column :importers, :login_id, :string
     add_column :importers, :password, :string
     rename_column :importers, :full_file_name, :full_uri_path
+  rescue
+  end
   end
 
   def self.down
