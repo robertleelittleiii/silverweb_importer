@@ -1,4 +1,4 @@
-class RenameStatusMessageInImporter < ActiveRecord::Migration
+class RenameStatusMessageInImporter < ActiveRecord::Migration[4.2]
   def self.up
   begin
     rename_column :importers, :stauts_message, :status_message

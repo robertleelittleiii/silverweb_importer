@@ -1,4 +1,4 @@
-class CreateImporterItems < ActiveRecord::Migration
+class CreateImporterItems < ActiveRecord::Migration[4.2]
   def self.up
     if not ActiveRecord::Base.connection.table_exists? 'importer_items' then
       create_table :importer_items do |t|

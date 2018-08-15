@@ -1,4 +1,4 @@
-class UpdateImporterAddColumns < ActiveRecord::Migration
+class UpdateImporterAddColumns < ActiveRecord::Migration[4.2]
   def self.up
   begin
     add_column :importers, :importer_type, :string

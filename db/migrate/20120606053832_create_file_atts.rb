@@ -1,4 +1,4 @@
-class CreateFileAtts < ActiveRecord::Migration
+class CreateFileAtts < ActiveRecord::Migration[4.2]
   def self.up
     if not ActiveRecord::Base.connection.table_exists? 'file_atts' then
       create_table :file_atts do |t|

@@ -1,4 +1,4 @@
-class AddStartAndEndTimeToImporter < ActiveRecord::Migration
+class AddStartAndEndTimeToImporter < ActiveRecord::Migration[4.2]
   def self.up
  begin
    add_column :importers, :start_time, :time

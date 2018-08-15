@@ -1,4 +1,4 @@
-class UpdatePermissionsImporter < ActiveRecord::Migration
+class UpdatePermissionsImporter < ActiveRecord::Migration[4.2]
   def self.up
     #assign them to Admin role.
     role_admin =  Role.find_by_name('Admin')

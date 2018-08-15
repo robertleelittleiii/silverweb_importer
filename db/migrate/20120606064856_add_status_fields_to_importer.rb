@@ -1,4 +1,4 @@
-class AddStatusFieldsToImporter < ActiveRecord::Migration
+class AddStatusFieldsToImporter < ActiveRecord::Migration[4.2]
   def self.up
   begin
     add_column :importers, :status, :string

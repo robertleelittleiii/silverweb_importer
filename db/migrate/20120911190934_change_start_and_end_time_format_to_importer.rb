@@ -1,4 +1,4 @@
-class ChangeStartAndEndTimeFormatToImporter < ActiveRecord::Migration
+class ChangeStartAndEndTimeFormatToImporter < ActiveRecord::Migration[4.2]
   def self.up
     
     change_column :importers, :start_time, :datetime

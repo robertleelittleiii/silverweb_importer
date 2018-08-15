@@ -1,4 +1,4 @@
-class AddFromTableToImporterItems < ActiveRecord::Migration
+class AddFromTableToImporterItems < ActiveRecord::Migration[4.2]
   def self.up
 begin
   add_column :importer_items, :from_table_name, :string
