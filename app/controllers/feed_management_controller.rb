@@ -67,7 +67,7 @@ class FeedManagementController < ApplicationController
   
   def columns_render_partial
     if params[:id].blank? or params[:id]=="null" or params[:id]=="undefined" then
-      render nothing: true
+      head :ok
     else
       @importer = Importer.find(params[:id])
       @filestoshow=FILESTOSHOW
@@ -100,7 +100,7 @@ class FeedManagementController < ApplicationController
     
         render partial: "columns"
       else
-        render nothing: true
+        head :ok
       end
       
     end
@@ -108,7 +108,7 @@ class FeedManagementController < ApplicationController
   
   def importer_name_partial
     if params[:id]=="" then
-      render nothing: true
+      head :ok
     else
       @importer_name=params[:importer_name]
       @importer = Importer.find(params[:id])
@@ -119,7 +119,7 @@ class FeedManagementController < ApplicationController
   
   def web_service_info_partial
     if params[:id].blank? then
-      render nothing: true
+      head :ok
     else
       @importer = Importer.find(params[:id])
       puts("nameofimporter:",@importer.name)
@@ -131,7 +131,7 @@ class FeedManagementController < ApplicationController
     puts("params ID",params[:id])
      
     if params[:id].blank? then
-      render nothing: true
+      head :ok
     else
       @importer = Importer.find(params[:id])
       @current_importer=params[:id]
@@ -149,7 +149,7 @@ class FeedManagementController < ApplicationController
     puts("params ID",params[:id])
      
     if params[:id].blank? or params[:id]=="null" then
-      render nothing: true
+      head :ok
     else
       @importer = Importer.find(params[:id])
       
@@ -160,7 +160,7 @@ class FeedManagementController < ApplicationController
   def load_importer_status
      
     if params[:id].blank? then
-      render nothing: true
+      head :ok
     else
       @importer = Importer.find(params[:id])
       
@@ -179,7 +179,7 @@ class FeedManagementController < ApplicationController
   
   def import_action_partial
     if params[:id]=="" then
-      render nothing: true
+      head :ok
     else
       @settings = Settings.all 
     if @settings.blank? then
@@ -261,7 +261,7 @@ class FeedManagementController < ApplicationController
       render partial: "xsd_columns"
        
     else
-      render nothing: true
+      head :ok
     end  
     
   end
@@ -270,7 +270,7 @@ class FeedManagementController < ApplicationController
   def sheet_columns_render_partial
     
     if params[:id].blank? or params[:id]=="null" or params[:id]=="undefined" then
-      render nothing: true
+      head :ok
     else
       puts("******** ******** ********* ********* ********* ********** ")
       puts("starting....")
@@ -336,13 +336,13 @@ class FeedManagementController < ApplicationController
           # puts(@hashed_name_row.inspect)
           render partial: "sheet_columns"
         else
-          render nothing: true
+          head :ok
         end  
         #rescue
-        # render nothing: true
+        # head :ok
         #end
       else
-        render nothing: true
+        head :ok
       end
     end
   end
@@ -533,7 +533,7 @@ class FeedManagementController < ApplicationController
     #  end  
 
     # head :deleted
-    render nothing: true
+    head :ok
 
     ##    respond_to do |format|
     #      format.js if request.xhr?
@@ -552,7 +552,7 @@ class FeedManagementController < ApplicationController
     #  end  
 
     # head :deleted
-    render nothing: true
+    head :ok
 
     ##    respond_to do |format|
     #      format.js if request.xhr?
@@ -571,7 +571,7 @@ class FeedManagementController < ApplicationController
     #  end  
 
     # head :deleted
-    render nothing: true
+    head :ok
 
     ##    respond_to do |format|
     #      format.js if request.xhr?
@@ -590,7 +590,7 @@ class FeedManagementController < ApplicationController
       #   Image.update(id, :position => position)
       Picture.reorder(id,position)
     end
-    render nothing: true
+    head :ok
 
   end
 
@@ -829,7 +829,7 @@ class FeedManagementController < ApplicationController
       
     end
     
-    render nothing: true
+    head :ok
     
   end
 
@@ -1198,7 +1198,7 @@ class FeedManagementController < ApplicationController
     importer.end_time = DateTime.now
     importer.save
     
-    render nothing: true
+    head :ok
 
   end
   
@@ -1324,7 +1324,7 @@ class FeedManagementController < ApplicationController
     
     end 
     @hashed_name_row=Hash[@name_row.collect { |v| [v, @name_row.index(v)]}]
-    render nothing: true
+    head :ok
   end
   
 
@@ -1424,7 +1424,7 @@ class FeedManagementController < ApplicationController
       row_counter+=1
 
     end 
-    render nothing: true
+    head :ok
       
   end
   
@@ -1505,7 +1505,7 @@ class FeedManagementController < ApplicationController
       row_counter+=1
 
     end 
-    render nothing: true
+    head :ok
       
   end
   
